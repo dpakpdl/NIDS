@@ -3,21 +3,22 @@
 from scapy.all import *
 
 # attributes in our dataset CSIC 2010
-attributes= ["Host","Content-Length","Length1"]
+attributes= ["Host","Content-Length","Length1","Content-Type"]
 features= {'typ':["Content-Type"]}
 
 # usual kinds of request and their numbering in order
 methods= ["GET","POST","DELETE","HEAD","PUT","TRACE","CONNECT"]
 
 #usual kinds of Content-Type and their numbering in order
-typ=[" application/x-www-form-urlencoded"," application/json"," multipart/form-data"]
+typ=[" application/x-www-form-urlencoded"," application/json"," multipart/form-data", " application/ocsp-request", 
+" text/plain;charset=UTF-8"]
 
+#store key value pair of HTTP payload 
+dictionary = {}
 
 #file to store data offline
 f = open('httpdatadeepak', 'w')
 
-#store key value pair of HTTP payload 
-dictionary = {}
 
 #return index KEY for words in dictionary
 def search(searchFor):
@@ -44,24 +45,26 @@ def filter(load):
                 dictionary[key]=str(eval(search(key)).index(value))
             elif key in attributes:
                 dictionary[key]=str(value)
-            # elif key not in attributes:
-            # pass
-            # else if value=null
-            #value=0
-       #  else value = vaue
+           
+           #assign default value
+            for k in attributes:
+                if k not in dictionary:
+                    dictionary[k]=str('NULL')
+
     for k,v in dictionary.items():
+        f.flush()
         print >> f,k+': '+v
     print >> f
+    dictionary.clear()
 
 def pfunc(packet): 
     if isHttp(packet):
-        print packet[TCP].payload
+        print packet.load
         for att in methods:
             if att in str(packet):
                 dictionary['Method'] = str(methods.index(att)) 
                 dictionary['Length1']= str(len(packet.payload.load))
         load = packet.load
-        filter(load)
-        f.flush()
+        filter(packet.load)
 
 sniff(prn=pfunc)
