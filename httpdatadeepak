@@ -1,60 +1,6 @@
-Content-Type: 0
-Length1: 820
+Content-Type: 1
 Host:  onlineparikshya.com
 Content-Length:  51
 Method: 1
-
-Content-Type: NULL
-Length1: 697
-Host:  onlineparikshya.com
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 421
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 421
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 338
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 338
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 406
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 406
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 406
-Host:  localhost
-Content-Length: NULL
-Method: 0
-
-Content-Type: NULL
-Length1: 406
-Host:  localhost
-Content-Length: NULL
-Method: 0
+Payload:  51
 

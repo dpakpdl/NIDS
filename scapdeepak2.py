@@ -3,7 +3,7 @@
 from scapy.all import *
 
 # attributes in our dataset CSIC 2010
-attributes= ["Host","Content-Length","Length1","Content-Type"]
+attributes= ["Host","Content-Length","Content-Type"]
 features= {'typ':["Content-Type"]}
 
 # usual kinds of request and their numbering in order
@@ -40,17 +40,27 @@ def filter(load):
         if p != -1:
             key = i[:p]
             value = i[p+1:]
+            #provide numerical value to content-type
             if key=='Content-Type':
                 #EVAL CONverts string to preexisting variable name
-                dictionary[key]=str(eval(search(key)).index(value))
-            elif key in attributes:
-                dictionary[key]=str(value)
-           
-           #assign default value
+                dictionary[key]=str(eval(search(key)).index(value)+1)
+            elif key in attributes: dictionary[key]=str(value) 
+            #assign default value
             for k in attributes:
                 if k not in dictionary:
-                    dictionary[k]=str('NULL')
+                    dictionary[k]=str('0')
+           # calculation of Payload
+            if dictionary['Method']=='0':
+                try:
+                    start=load.index('?')
+                    end=load.index('HTTP/')
+                    dictionary['Payload']=str(len(load[start:end-2]))
+                except ValueError:
+                    return ""
+            else:
+                dictionary['Payload']=dictionary['Content-Length']
 
+    # writing data in file
     for k,v in dictionary.items():
         f.flush()
         print >> f,k+': '+v
@@ -59,11 +69,9 @@ def filter(load):
 
 def pfunc(packet): 
     if isHttp(packet):
-        print packet.load
         for att in methods:
             if att in str(packet):
                 dictionary['Method'] = str(methods.index(att)) 
-                dictionary['Length1']= str(len(packet.payload.load))
         load = packet.load
         filter(packet.load)
 
